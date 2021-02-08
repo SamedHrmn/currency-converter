@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:currency_converter/ui/rates_convert/viewmodel/converter_view_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../ui/rates_convert/viewmodel/converter_view_model.dart';
 
 class AnimatedResultText extends StatelessWidget {
   const AnimatedResultText({
@@ -31,19 +32,17 @@ class AnimatedResultText extends StatelessWidget {
           totalRepeatCount: totalRepeat,
           speed: Duration(seconds: durationSec),
           text: [
-            (double.parse(converterViewModel.conventer.result.toString()) *
-                    (controller.text.isNotEmpty
-                        ? int.parse(controller.text)
-                        : 0))
+            (double.parse(converterViewModel.conventer.result.toString()) * (controller.text.isNotEmpty ? int.parse(controller.text) : 0))
                 .toStringAsFixed(2)
           ],
           textStyle: TextStyle(color: textColor, fontSize: fontSize),
         ),
       );
-    } else
+    } else {
       return Text(
-        "Result is..",
+        'Result is..',
         style: TextStyle(fontSize: 16),
       );
+    }
   }
 }

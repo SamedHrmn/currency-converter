@@ -15,7 +15,7 @@ class RotatorWidget extends StatelessWidget {
     return RotationTransition(
         turns: transitionController,
         child: Image.asset(
-          "assets/splash_screen/splash_screen_loading.gif",
+          'assets/splash_screen/splash_screen_loading.gif',
         ));
   }
 }

@@ -1,20 +1,18 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:currency_converter/ui/rates_convert/view/converter_view.dart';
-import 'package:currency_converter/ui/rates_search/view/rates_view.dart';
-import 'package:currency_converter/ui/rates_search/viewmodel/rates_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:currency_converter/core/services/network_status_service.dart';
-import 'package:currency_converter/core/components/network_aware_widget.dart';
+
+import '../core/components/network_aware_widget.dart';
+import '../core/services/network_status_service.dart';
+import '../ui/rates_convert/view/converter_view.dart';
+import '../ui/rates_search/view/rates_view.dart';
+import '../ui/rates_search/viewmodel/rates_view_model.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   Map<String, double> rates;
@@ -28,7 +26,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
-    currencyBase = List();
+    currencyBase = [];
   }
 
   @override
@@ -55,10 +53,7 @@ class _HomePageState extends State<HomePage>
         appBar: AppBar(
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[Colors.white, Colors.purple])),
+                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Colors.white, Colors.purple])),
           ),
           backgroundColor: Colors.purple.shade300,
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
@@ -67,13 +62,13 @@ class _HomePageState extends State<HomePage>
             tabs: [
               Tab(
                 child: Text(
-                  "Converter",
+                  'Converter',
                   style: TextStyle(color: Colors.black),
                 ),
               ),
               Tab(
                 child: Text(
-                  "Rates",
+                  'Rates',
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -91,8 +86,7 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         body: StreamProvider<NetworkStatus>(
-          create: (context) =>
-              NetworkStatusService().networkStatusController.stream,
+          create: (context) => NetworkStatusService().networkStatusController.stream,
           child: NetworkAwareWidget(
             offlineChild: TabBarView(
               controller: _tabController,

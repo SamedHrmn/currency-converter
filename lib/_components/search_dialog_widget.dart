@@ -1,6 +1,7 @@
-import 'package:currency_converter/core/components/dropdown_currency_button.dart';
-import 'package:currency_converter/ui/rates_search/viewmodel/rates_view_model.dart';
 import 'package:flutter/material.dart';
+
+import '../core/components/dropdown_currency_button.dart';
+import '../ui/rates_search/viewmodel/rates_view_model.dart';
 
 class SearchDialog extends StatefulWidget {
   final List<String> currencyBase;
@@ -13,14 +14,14 @@ class SearchDialog extends StatefulWidget {
 }
 
 class _SearchDialogState extends State<SearchDialog> {
-  String selectedItem = "EUR";
+  String selectedItem = 'EUR';
 
   @override
   void initState() {
     super.initState();
   }
 
-  dropDownItemCallBack(String val) {
+  void dropDownItemCallBack(String val) {
     setState(() {
       selectedItem = val;
     });
@@ -30,7 +31,7 @@ class _SearchDialogState extends State<SearchDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: EdgeInsets.symmetric(horizontal: 75),
-      title: Text("Select a currency base"),
+      title: Text('Select a currency base'),
       titlePadding: EdgeInsets.all(20),
       content: DropdownCurrencyButton(
         currencyBase: widget.currencyBase,
@@ -46,11 +47,9 @@ class _SearchDialogState extends State<SearchDialog> {
               widget.viewModel.getLatestCurrencyRates(selectedItem);
               Navigator.pop(context);
             },
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(12.0),
-                side: BorderSide(color: Colors.purple)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: Colors.purple)),
             icon: Icon(Icons.search),
-            label: Text("Search"))
+            label: Text('Search'))
       ],
     );
   }

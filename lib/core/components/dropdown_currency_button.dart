@@ -27,10 +27,7 @@ class DropdownCurrencyButton extends StatelessWidget {
                     width: 45,
                     height: 45,
                     margin: EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/flags/$value.png"),
-                            fit: BoxFit.contain)),
+                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/flags/$value.png'), fit: BoxFit.contain)),
                   ),
                   Text(value)
                 ],

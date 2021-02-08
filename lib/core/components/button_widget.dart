@@ -1,5 +1,6 @@
-import 'package:currency_converter/ui/rates_convert/viewmodel/converter_view_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../ui/rates_convert/viewmodel/converter_view_model.dart';
 
 class ButtonConvert extends StatelessWidget {
   const ButtonConvert({
@@ -26,12 +27,9 @@ class ButtonConvert extends StatelessWidget {
     return RaisedButton.icon(
         color: bgColor,
         onPressed: () {
-          converterViewModel.getConverterResult(
-              selectedItemFrom, selectedItemTo);
+          converterViewModel.getConverterResult(selectedItemFrom, selectedItemTo);
         },
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(12.0),
-            side: BorderSide(color: borderColor)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: borderColor)),
         icon: icon,
         label: labelText);
   }

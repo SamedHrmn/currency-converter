@@ -1,4 +1,4 @@
-package com.example.currency_converter
+package com.samedharman.currency_converter
 
 import io.flutter.embedding.android.FlutterActivity
 

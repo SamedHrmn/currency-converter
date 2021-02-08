@@ -1,11 +1,11 @@
 import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 
 enum NetworkStatus { Online, Offline }
 
 class NetworkStatusService {
-  StreamController<NetworkStatus> networkStatusController =
-      StreamController<NetworkStatus>();
+  StreamController<NetworkStatus> networkStatusController = StreamController<NetworkStatus>();
 
   NetworkStatusService() {
     Connectivity().onConnectivityChanged.listen((status) {
@@ -19,10 +19,10 @@ class NetworkStatusService {
         ? NetworkStatus.Online
         : NetworkStatus.Offline;*/
 
-    if (status == ConnectivityResult.mobile ||
-        status == ConnectivityResult.wifi)
+    if (status == ConnectivityResult.mobile || status == ConnectivityResult.wifi) {
       return NetworkStatus.Online;
-    else
+    } else {
       return NetworkStatus.Offline;
+    }
   }
 }

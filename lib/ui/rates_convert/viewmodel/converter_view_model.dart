@@ -1,12 +1,12 @@
-import 'package:currency_converter/core/init/locator.dart';
-import 'package:currency_converter/core/services/currency_service.dart';
-import 'package:currency_converter/ui/rates_convert/model/converter.dart';
+import '../../../core/init/locator.dart';
+import '../../../core/services/currency_service.dart';
+import '../model/converter.dart';
 import 'package:flutter/material.dart';
 
 enum ConverterState { LoadingState, LoadedState, ErrorState }
 
 class ConverterViewModel extends ChangeNotifier {
-  CurrencyService _service = getIt.get<CurrencyService>();
+  final CurrencyService _service = getIt.get<CurrencyService>();
   Converter _converter;
   ConverterState _state;
 
@@ -27,7 +27,7 @@ class ConverterViewModel extends ChangeNotifier {
       state = ConverterState.LoadedState;
     } catch (e) {
       state = ConverterState.ErrorState;
-      print("Exception : " + e.toString());
+      print('Exception : ' + e.toString());
     }
     return _converter;
   }

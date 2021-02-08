@@ -27,12 +27,11 @@ class TextFieldAmount extends StatelessWidget {
         decoration: InputDecoration(
             labelStyle: TextStyle(color: labelColor),
             hintStyle: TextStyle(color: hintColor),
-            labelText: "Amount",
-            hintText: "Please enter amount.. e.g: 20",
+            labelText: 'Amount',
+            hintText: 'Please enter amount.. e.g: 20',
             border: const OutlineInputBorder(),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: outlineBorderColor),
-                borderRadius: BorderRadius.all(Radius.circular(10)))),
+            focusedBorder:
+                OutlineInputBorder(borderSide: BorderSide(color: outlineBorderColor), borderRadius: BorderRadius.all(Radius.circular(10)))),
       ),
     );
   }

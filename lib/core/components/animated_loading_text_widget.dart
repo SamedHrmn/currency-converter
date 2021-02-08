@@ -8,7 +8,7 @@ class AnimatedLoadingTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Shader linearGradient = LinearGradient(
+    final linearGradient = LinearGradient(
       colors: <Color>[Colors.white, Colors.purple],
     ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
@@ -17,11 +17,8 @@ class AnimatedLoadingTextWidget extends StatelessWidget {
       height: 100,
       alignment: Alignment.center,
       child: WavyAnimatedTextKit(
-        text: ["Loading"],
-        textStyle: TextStyle(
-            foreground: Paint()..shader = linearGradient,
-            fontSize: 32,
-            fontWeight: FontWeight.w400),
+        text: ['Loading'],
+        textStyle: TextStyle(foreground: Paint()..shader = linearGradient, fontSize: 32, fontWeight: FontWeight.w400),
         isRepeatingAnimation: true,
       ),
     );

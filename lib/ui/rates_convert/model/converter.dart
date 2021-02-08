@@ -24,24 +24,23 @@ class Converter {
   dynamic result;
 
   factory Converter.fromJson(Map<String, dynamic> json) => Converter(
-        motd: Motd.fromJson(json["motd"]),
-        success: json["success"],
-        query: Query.fromJson(json["query"]),
-        info: Info.fromJson(json["info"]),
-        historical: json["historical"],
-        date: DateTime.parse(json["date"]),
-        result: json["result"],
+        motd: Motd.fromJson(json['motd']),
+        success: json['success'],
+        query: Query.fromJson(json['query']),
+        info: Info.fromJson(json['info']),
+        historical: json['historical'],
+        date: DateTime.parse(json['date']),
+        result: json['result'],
       );
 
   Map<String, dynamic> toJson() => {
-        "motd": motd.toJson(),
-        "success": success,
-        "query": query.toJson(),
-        "info": info.toJson(),
-        "historical": historical,
-        "date":
-            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-        "result": result,
+        'motd': motd.toJson(),
+        'success': success,
+        'query': query.toJson(),
+        'info': info.toJson(),
+        'historical': historical,
+        'date': "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        'result': result,
       };
 }
 
@@ -53,11 +52,11 @@ class Info {
   dynamic rate;
 
   factory Info.fromJson(Map<String, dynamic> json) => Info(
-        rate: json["rate"],
+        rate: json['rate'],
       );
 
   Map<String, dynamic> toJson() => {
-        "rate": rate,
+        'rate': rate,
       };
 }
 
@@ -71,13 +70,13 @@ class Motd {
   String url;
 
   factory Motd.fromJson(Map<String, dynamic> json) => Motd(
-        msg: json["msg"],
-        url: json["url"],
+        msg: json['msg'],
+        url: json['url'],
       );
 
   Map<String, dynamic> toJson() => {
-        "msg": msg,
-        "url": url,
+        'msg': msg,
+        'url': url,
       };
 }
 
@@ -93,14 +92,14 @@ class Query {
   int amount;
 
   factory Query.fromJson(Map<String, dynamic> json) => Query(
-        from: json["from"],
-        to: json["to"],
-        amount: json["amount"],
+        from: json['from'],
+        to: json['to'],
+        amount: json['amount'],
       );
 
   Map<String, dynamic> toJson() => {
-        "from": from,
-        "to": to,
-        "amount": amount,
+        'from': from,
+        'to': to,
+        'amount': amount,
       };
 }

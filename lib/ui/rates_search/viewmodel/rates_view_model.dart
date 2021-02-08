@@ -1,12 +1,13 @@
-import 'package:currency_converter/core/init/locator.dart';
-import 'package:currency_converter/ui/rates_search/model/rates.dart';
-import 'package:currency_converter/core/services/currency_service.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/init/locator.dart';
+import '../../../core/services/currency_service.dart';
+import '../model/rates.dart';
 
 enum RatesState { LoadingState, LoadedState, ErrorState }
 
 class RatesViewModel extends ChangeNotifier {
-  CurrencyService _service = getIt.get<CurrencyService>();
+  final CurrencyService _service = getIt.get<CurrencyService>();
   Rates _rate;
   RatesState _state;
 
@@ -15,7 +16,7 @@ class RatesViewModel extends ChangeNotifier {
   RatesState get state => _state;
 
   RatesViewModel() {
-    getLatestCurrencyRates("EUR");
+    getLatestCurrencyRates('EUR');
   }
 
   set state(RatesState state) {
@@ -31,7 +32,7 @@ class RatesViewModel extends ChangeNotifier {
       state = RatesState.LoadedState;
     } catch (e) {
       state = RatesState.ErrorState;
-      print("Exception : " + e.toString());
+      print('Exception : ' + e.toString());
     }
     return _rate;
   }
