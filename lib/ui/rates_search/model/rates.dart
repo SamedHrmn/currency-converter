@@ -8,31 +8,31 @@ class Rates {
   Rates({
     this.motd,
     this.success,
-    this.base,
+    this.baseRate,
     this.date,
     this.rates,
   });
 
-  Motd motd;
-  bool success;
-  String base;
-  DateTime date;
-  Map<String, double> rates;
+  final Motd? motd;
+  final bool? success;
+  final String? baseRate;
+  final DateTime? date;
+  final Map<String, double>? rates;
 
   factory Rates.fromJson(Map<String, dynamic> json) => Rates(
         motd: Motd.fromJson(json['motd']),
         success: json['success'],
-        base: json['base'],
+        baseRate: json['base'],
         date: DateTime.parse(json['date']),
         rates: Map.from(json['rates']).map((k, v) => MapEntry<String, double>(k, v.toDouble())),
       );
 
   Map<String, dynamic> toJson() => {
-        'motd': motd.toJson(),
+        'motd': motd?.toJson(),
         'success': success,
-        'base': base,
-        'date': "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
-        'rates': Map.from(rates).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        'base': baseRate,
+        'date': "${date?.year.toString().padLeft(4, '0')}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
+        'rates': Map.from(rates ?? {}).map((k, v) => MapEntry<String, dynamic>(k, v)),
       };
 }
 
@@ -42,8 +42,8 @@ class Motd {
     this.url,
   });
 
-  String msg;
-  String url;
+  final String? msg;
+  final String? url;
 
   factory Motd.fromJson(Map<String, dynamic> json) => Motd(
         msg: json['msg'],

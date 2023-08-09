@@ -10,7 +10,7 @@ import 'ui/rates_search/viewmodel/rates_view_model.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   setup();
   runApp(
     MultiProvider(providers: [

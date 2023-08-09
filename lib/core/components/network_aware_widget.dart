@@ -8,7 +8,7 @@ class NetworkAwareWidget extends StatelessWidget {
   final Widget onlineChild;
   final Widget offlineChild;
 
-  const NetworkAwareWidget({Key key, this.onlineChild, this.offlineChild}) : super(key: key);
+  const NetworkAwareWidget({Key? key, required this.onlineChild, required this.offlineChild}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

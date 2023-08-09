@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AnimatedLoadingTextWidget extends StatelessWidget {
   const AnimatedLoadingTextWidget({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -16,10 +16,13 @@ class AnimatedLoadingTextWidget extends StatelessWidget {
       width: 150,
       height: 100,
       alignment: Alignment.center,
-      child: WavyAnimatedTextKit(
-        text: ['Loading'],
-        textStyle: TextStyle(foreground: Paint()..shader = linearGradient, fontSize: 32, fontWeight: FontWeight.w400),
-        isRepeatingAnimation: true,
+      child: AnimatedTextKit(
+        animatedTexts: [
+          WavyAnimatedText(
+            'Loading',
+            textStyle: TextStyle(foreground: Paint()..shader = linearGradient, fontSize: 32, fontWeight: FontWeight.w400),
+          ),
+        ],
       ),
     );
   }

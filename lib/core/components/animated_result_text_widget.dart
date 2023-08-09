@@ -5,13 +5,13 @@ import '../../ui/rates_convert/viewmodel/converter_view_model.dart';
 
 class AnimatedResultText extends StatelessWidget {
   const AnimatedResultText({
-    Key key,
-    @required this.controller,
-    @required this.converterViewModel,
-    @required this.totalRepeat,
-    @required this.durationSec,
-    @required this.fontSize,
-    @required this.textColor,
+    Key? key,
+    required this.controller,
+    required this.converterViewModel,
+    required this.totalRepeat,
+    required this.durationSec,
+    required this.fontSize,
+    required this.textColor,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -28,14 +28,15 @@ class AnimatedResultText extends StatelessWidget {
         width: 100,
         height: 50,
         alignment: Alignment.center,
-        child: WavyAnimatedTextKit(
+        child: AnimatedTextKit(
           totalRepeatCount: totalRepeat,
-          speed: Duration(seconds: durationSec),
-          text: [
-            (double.parse(converterViewModel.conventer.result.toString()) * (controller.text.isNotEmpty ? int.parse(controller.text) : 0))
-                .toStringAsFixed(2)
+          animatedTexts: [
+            WavyAnimatedText(
+              (double.parse(converterViewModel.conventer.result.toString()) * (controller.text.isNotEmpty ? int.parse(controller.text) : 0)).toStringAsFixed(2),
+              speed: Duration(seconds: durationSec),
+              textStyle: TextStyle(color: textColor, fontSize: fontSize),
+            ),
           ],
-          textStyle: TextStyle(color: textColor, fontSize: fontSize),
         ),
       );
     } else {

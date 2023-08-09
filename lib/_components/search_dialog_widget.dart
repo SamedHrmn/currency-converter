@@ -21,7 +21,8 @@ class _SearchDialogState extends State<SearchDialog> {
     super.initState();
   }
 
-  void dropDownItemCallBack(String val) {
+  void dropDownItemCallBack(String? val) {
+    if (val == null) return;
     setState(() {
       selectedItem = val;
     });
@@ -40,14 +41,15 @@ class _SearchDialogState extends State<SearchDialog> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       ),
       actions: [
-        RaisedButton.icon(
-            highlightColor: Colors.purple[200],
-            color: Colors.white,
+        ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: Colors.purple)),
+              backgroundColor: Colors.white,
+            ),
             onPressed: () {
               widget.viewModel.getLatestCurrencyRates(selectedItem);
               Navigator.pop(context);
             },
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: Colors.purple)),
             icon: Icon(Icons.search),
             label: Text('Search'))
       ],

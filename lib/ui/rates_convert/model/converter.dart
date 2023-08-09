@@ -15,13 +15,13 @@ class Converter {
     this.result,
   });
 
-  Motd motd;
-  bool success;
-  Query query;
-  Info info;
-  bool historical;
-  DateTime date;
-  dynamic result;
+  final Motd? motd;
+  final bool? success;
+  final Query? query;
+  final Info? info;
+  final bool? historical;
+  final DateTime? date;
+  final dynamic result;
 
   factory Converter.fromJson(Map<String, dynamic> json) => Converter(
         motd: Motd.fromJson(json['motd']),
@@ -34,12 +34,12 @@ class Converter {
       );
 
   Map<String, dynamic> toJson() => {
-        'motd': motd.toJson(),
+        'motd': motd?.toJson(),
         'success': success,
-        'query': query.toJson(),
-        'info': info.toJson(),
+        'query': query?.toJson(),
+        'info': info?.toJson(),
         'historical': historical,
-        'date': "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        'date': "${date?.year.toString().padLeft(4, '0')}-${date?.month.toString().padLeft(2, '0')}-${date?.day.toString().padLeft(2, '0')}",
         'result': result,
       };
 }
@@ -66,8 +66,8 @@ class Motd {
     this.url,
   });
 
-  String msg;
-  String url;
+  final String? msg;
+  final String? url;
 
   factory Motd.fromJson(Map<String, dynamic> json) => Motd(
         msg: json['msg'],
@@ -87,9 +87,9 @@ class Query {
     this.amount,
   });
 
-  String from;
-  String to;
-  int amount;
+  final String? from;
+  final String? to;
+  final int? amount;
 
   factory Query.fromJson(Map<String, dynamic> json) => Query(
         from: json['from'],

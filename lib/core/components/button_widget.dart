@@ -4,14 +4,14 @@ import '../../ui/rates_convert/viewmodel/converter_view_model.dart';
 
 class ButtonConvert extends StatelessWidget {
   const ButtonConvert({
-    Key key,
-    @required this.selectedItemFrom,
-    @required this.selectedItemTo,
-    @required this.converterViewModel,
-    @required this.bgColor,
-    @required this.icon,
-    @required this.labelText,
-    @required this.borderColor,
+    Key? key,
+    required this.selectedItemFrom,
+    required this.selectedItemTo,
+    required this.converterViewModel,
+    required this.bgColor,
+    required this.icon,
+    required this.labelText,
+    required this.borderColor,
   }) : super(key: key);
 
   final String selectedItemFrom;
@@ -24,12 +24,14 @@ class ButtonConvert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton.icon(
-        color: bgColor,
+    return ElevatedButton.icon(
         onPressed: () {
           converterViewModel.getConverterResult(selectedItemFrom, selectedItemTo);
         },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: borderColor)),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: borderColor)),
+          backgroundColor: bgColor,
+        ),
         icon: icon,
         label: labelText);
   }

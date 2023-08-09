@@ -13,10 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  late final TabController _tabController;
 
-  Map<String, double> rates;
-  List<String> currencyBase;
+  Map<String, double> rates = {};
+  List<String> currencyBase = [];
 
   var subscription;
   var connectionStatus;
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     //final networkModel = Provider.of<NetworkStatus>(context);
 
     if (viewModel.state == RatesState.LoadedState) {
-      rates = viewModel.rate.rates;
+      rates = viewModel.rate.rates ?? {};
       rates.forEach((key, value) => currencyBase.add(key));
       currencyBase = currencyBase.toSet().toList();
     }
@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Colors.white, Colors.purple])),
+            decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[Colors.white, Colors.purple])),
           ),
           backgroundColor: Colors.purple.shade300,
           toolbarHeight: MediaQuery.of(context).size.height * 0.1,
@@ -86,6 +85,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ),
         ),
         body: StreamProvider<NetworkStatus>(
+          initialData: NetworkStatus.Online,
           create: (context) => NetworkStatusService().networkStatusController.stream,
           child: NetworkAwareWidget(
             offlineChild: TabBarView(

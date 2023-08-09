@@ -14,9 +14,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   final colorTween = ColorTween(begin: Colors.purple, end: Colors.white);
-  AnimationController backgroundController;
-  AnimationController transitionController;
-  Animation<Color> animation;
+  late final AnimationController backgroundController;
+  late final AnimationController transitionController;
+  late final Animation<Color?> animation;
 
   @override
   void initState() {
@@ -37,9 +37,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     transitionController = AnimationController(vsync: this, duration: Duration(seconds: 5))..repeat();
   }
 
-  void _router({int seconds}) {
-    Future.delayed(Duration(seconds: seconds))
-        .then((value) => Navigator.pushAndRemoveUntil(context, _createRoute(), (Route<dynamic> route) => route is HomePage));
+  void _router({required int seconds}) {
+    Future.delayed(Duration(seconds: seconds)).then((value) => Navigator.pushAndRemoveUntil(context, _createRoute(), (Route<dynamic> route) => route is HomePage));
   }
 
   Route _createRoute() {

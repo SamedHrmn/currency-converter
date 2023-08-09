@@ -8,14 +8,14 @@ class RatesPage extends StatefulWidget {
   final RatesViewModel viewModel;
   final List<String> currencyBase;
 
-  RatesPage({this.currencyBase, this.viewModel});
+  RatesPage({required this.currencyBase, required this.viewModel});
 
   @override
   _RatesPageState createState() => _RatesPageState();
 }
 
 class _RatesPageState extends State<RatesPage> with SingleTickerProviderStateMixin {
-  AnimationController transitionController;
+  late final AnimationController transitionController;
 
   @override
   void initState() {
@@ -49,14 +49,14 @@ class _RatesPageState extends State<RatesPage> with SingleTickerProviderStateMix
 
   Widget rateslistBuilder(RatesViewModel viewModel) {
     return ListView.builder(
-        itemCount: viewModel.rate.rates.length,
+        itemCount: viewModel.rate.rates!.length,
         itemBuilder: (context, index) {
-          var key = viewModel.rate.rates.keys.elementAt(index);
+          var key = viewModel.rate.rates!.keys.elementAt(index);
           return Column(children: [
             ListTile(
               leading: Image.asset('assets/flags/' + key + '.png'),
               title: Text('$key'),
-              subtitle: Text('${viewModel.rate.rates[key]}'),
+              subtitle: Text('${viewModel.rate.rates![key]}'),
             ),
             Divider(
               height: 2.0,

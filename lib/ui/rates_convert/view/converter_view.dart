@@ -16,13 +16,13 @@ class ConverterPage extends StatefulWidget {
 }
 
 class _ConverterPageState extends State<ConverterPage> with SingleTickerProviderStateMixin {
-  List<String> currencyBase;
-  Map<String, double> rates;
+  List<String> currencyBase = [];
+  Map<String, double> rates = {};
   String selectedItemFrom = 'EUR';
   String selectedItemTo = 'TRY';
   String resultConverted = '0';
-  TextEditingController controller;
-  AnimationController transitionController;
+  late final TextEditingController controller;
+  late final AnimationController transitionController;
   final Shader linearGradient = LinearGradient(
     colors: <Color>[Colors.red, Colors.purple],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
@@ -46,19 +46,22 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
     super.dispose();
   }
 
-  void dropDownLeftItemCallBack(String val) {
+  void dropDownLeftItemCallBack(String? val) {
+    if (val == null) return;
     setState(() {
       selectedItemFrom = val;
     });
   }
 
-  void dropDownRightItemCallBack(String val) {
+  void dropDownRightItemCallBack(String? val) {
+    if (val == null) return;
     setState(() {
       selectedItemTo = val;
     });
   }
 
-  void resultConvertedCallBack(String val) {
+  void resultConvertedCallBack(String? val) {
+    if (val == null) return;
     setState(() {
       resultConverted = val;
     });
@@ -71,7 +74,7 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
     if (viewModel.state == RatesState.LoadingState || viewModel.state == RatesState.ErrorState) {
       return RotatorWidget(transitionController: transitionController);
     } else if (viewModel.state == RatesState.LoadedState) {
-      rates = viewModel.rate.rates;
+      rates = viewModel.rate.rates ?? {};
       rates.forEach((key, value) => currencyBase.add(key));
       currencyBase = currencyBase.toSet().toList();
 
@@ -90,13 +93,7 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
                 SizedBox(height: 20),
                 buildDropDownButtons(selectedItemFrom, selectedItemTo, dropDownLeftItemCallBack, dropDownRightItemCallBack),
                 TextFieldAmount(controller: controller, outlineBorderColor: Colors.purple, hintColor: Colors.grey, labelColor: Colors.purple),
-                AnimatedResultText(
-                    controller: controller,
-                    converterViewModel: converterViewModel,
-                    totalRepeat: 10,
-                    durationSec: 3,
-                    fontSize: 22,
-                    textColor: Colors.black),
+                AnimatedResultText(controller: controller, converterViewModel: converterViewModel, totalRepeat: 10, durationSec: 3, fontSize: 22, textColor: Colors.black),
                 SizedBox(
                   height: 20,
                 ),
@@ -125,7 +122,7 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          DateFormat.yMMMEd('en_US').format(viewModel.rate.date),
+                          DateFormat.yMMMEd('en_US').format(viewModel.rate.date!),
                           style: TextStyle(fontSize: 13, color: Colors.black),
                         ),
                       ),
@@ -137,10 +134,12 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
           );
         },
       );
+    } else {
+      return const SizedBox();
     }
   }
 
-  Widget buildDropDownButtons(String selectedItemFrom, String selectedItemTo, Function dropDownLeftItemCallBack, Function dropDownRightItemCallBack) {
+  Widget buildDropDownButtons(String selectedItemFrom, String selectedItemTo, Function(String? item)? dropDownLeftItemCallBack, Function(String? item) dropDownRightItemCallBack) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -150,11 +149,7 @@ class _ConverterPageState extends State<ConverterPage> with SingleTickerProvider
           selectedVal: selectedItemFrom,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         ),
-        DropdownCurrencyButton(
-            currencyBase: currencyBase,
-            callback: dropDownRightItemCallBack,
-            selectedVal: selectedItemTo,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly),
+        DropdownCurrencyButton(currencyBase: currencyBase, callback: dropDownRightItemCallBack, selectedVal: selectedItemTo, mainAxisAlignment: MainAxisAlignment.spaceEvenly),
       ],
     );
   }

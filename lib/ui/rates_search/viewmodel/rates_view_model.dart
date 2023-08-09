@@ -4,12 +4,12 @@ import '../../../core/init/locator.dart';
 import '../../../core/services/currency_service.dart';
 import '../model/rates.dart';
 
-enum RatesState { LoadingState, LoadedState, ErrorState }
+enum RatesState { IdleState, LoadingState, LoadedState, ErrorState }
 
 class RatesViewModel extends ChangeNotifier {
   final CurrencyService _service = getIt.get<CurrencyService>();
-  Rates _rate;
-  RatesState _state;
+  Rates _rate = Rates();
+  RatesState _state = RatesState.IdleState;
 
   Rates get rate => _rate;
 

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class DropdownCurrencyButton extends StatelessWidget {
   const DropdownCurrencyButton({
-    Key key,
-    @required this.currencyBase,
+    Key? key,
+    required this.currencyBase,
     this.callback,
     this.selectedVal,
     this.mainAxisAlignment,
   }) : super(key: key);
 
   final List<String> currencyBase;
-  final Function callback;
-  final String selectedVal;
-  final MainAxisAlignment mainAxisAlignment;
+  final void Function(String? onItem)? callback;
+  final String? selectedVal;
+  final MainAxisAlignment? mainAxisAlignment;
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
@@ -35,7 +35,7 @@ class DropdownCurrencyButton extends StatelessWidget {
               value: value);
         }).toList(),
         onChanged: (item) {
-          callback(item);
+          callback?.call(item);
         },
         value: selectedVal,
       ),

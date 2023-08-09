@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class TextFieldAmount extends StatelessWidget {
   const TextFieldAmount({
-    Key key,
-    @required this.controller,
-    @required this.outlineBorderColor,
-    @required this.hintColor,
-    @required this.labelColor,
+    Key? key,
+    required this.controller,
+    required this.outlineBorderColor,
+    required this.hintColor,
+    required this.labelColor,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -30,8 +30,7 @@ class TextFieldAmount extends StatelessWidget {
             labelText: 'Amount',
             hintText: 'Please enter amount.. e.g: 20',
             border: const OutlineInputBorder(),
-            focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: outlineBorderColor), borderRadius: BorderRadius.all(Radius.circular(10)))),
+            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: outlineBorderColor), borderRadius: BorderRadius.all(Radius.circular(10)))),
       ),
     );
   }

@@ -3,12 +3,12 @@ import '../../../core/services/currency_service.dart';
 import '../model/converter.dart';
 import 'package:flutter/material.dart';
 
-enum ConverterState { LoadingState, LoadedState, ErrorState }
+enum ConverterState { IdleState, LoadingState, LoadedState, ErrorState }
 
 class ConverterViewModel extends ChangeNotifier {
   final CurrencyService _service = getIt.get<CurrencyService>();
-  Converter _converter;
-  ConverterState _state;
+  Converter _converter = Converter();
+  ConverterState _state = ConverterState.IdleState;
 
   Converter get conventer => _converter;
 
