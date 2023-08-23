@@ -21,7 +21,6 @@ class TextFieldAmount extends StatelessWidget {
       width: 250,
       height: 100,
       child: TextField(
-        autofocus: false,
         controller: controller,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(

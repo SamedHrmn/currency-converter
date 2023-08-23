@@ -1,10 +1,9 @@
+import 'package:currency_converter/core/enums/currency_enum.dart';
+import 'package:currency_converter/features/rates_convert/viewmodel/converter_view_model.dart';
 import 'package:flutter/material.dart';
-
-import '../../ui/rates_convert/viewmodel/converter_view_model.dart';
 
 class ButtonConvert extends StatelessWidget {
   const ButtonConvert({
-    Key? key,
     required this.selectedItemFrom,
     required this.selectedItemTo,
     required this.converterViewModel,
@@ -12,10 +11,11 @@ class ButtonConvert extends StatelessWidget {
     required this.icon,
     required this.labelText,
     required this.borderColor,
-  }) : super(key: key);
+    super.key,
+  });
 
-  final String selectedItemFrom;
-  final String selectedItemTo;
+  final CurrencyEnum selectedItemFrom;
+  final CurrencyEnum selectedItemTo;
   final ConverterViewModel converterViewModel;
   final Color bgColor;
   final Icon icon;
@@ -25,14 +25,15 @@ class ButtonConvert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        onPressed: () {
-          converterViewModel.getConverterResult(selectedItemFrom, selectedItemTo);
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0), side: BorderSide(color: borderColor)),
-          backgroundColor: bgColor,
-        ),
-        icon: icon,
-        label: labelText);
+      onPressed: () {
+        converterViewModel.getConverterResult(selectedItemFrom.name, selectedItemTo.name);
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: borderColor)),
+        backgroundColor: bgColor,
+      ),
+      icon: icon,
+      label: labelText,
+    );
   }
 }
