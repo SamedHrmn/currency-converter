@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:currency_converter/core/init/cache_manager.dart';
@@ -26,13 +27,14 @@ class HttpCurrencyService implements ICurrencyService {
 
     final dir = await getTemporaryDirectory();
 
-    final cacheCurrencyService = getIt.get<CacheCurrencyService>()..initManager(fileName: filename, fileExtension: '.json', dir: dir);
+    final cacheCurrencyService = getIt.get<CacheCurrencyService>()..initManager(fileName: filename, dir: dir);
 
     if (cacheCurrencyService.file != null && cacheCurrencyService.file!.existsSync()) {
-      cacheCurrencyService.cacheClear(DateTime.now(), baseUrl);
+      await cacheCurrencyService.cacheClear(DateTime.now(), baseUrl);
 
       final response = cacheCurrencyService.readFile();
       if (response == null) throw Exception();
+      log('Currency from cache');
       return RatesModel.fromJson(json.decode(response) as Map<String, dynamic>);
     } else {
       final request = await client.getUrl(Uri.parse(END_POINT + LATEST_POINT + baseUrl));
@@ -41,6 +43,7 @@ class HttpCurrencyService implements ICurrencyService {
       client.close();
 
       cacheCurrencyService.writeFile(body: responseBody);
+      log('Currency from network,file write');
       return RatesModel.fromJson(json.decode(responseBody) as Map<String, dynamic>);
     }
   }

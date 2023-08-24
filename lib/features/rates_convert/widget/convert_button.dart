@@ -10,7 +10,6 @@ class ButtonConvert extends StatelessWidget {
     required this.bgColor,
     required this.icon,
     required this.labelText,
-    required this.borderColor,
     super.key,
   });
 
@@ -18,9 +17,8 @@ class ButtonConvert extends StatelessWidget {
   final CurrencyEnum selectedItemTo;
   final ConverterViewModel converterViewModel;
   final Color bgColor;
-  final Icon icon;
-  final Text labelText;
-  final Color borderColor;
+  final IconData icon;
+  final String labelText;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +27,19 @@ class ButtonConvert extends StatelessWidget {
         converterViewModel.getConverterResult(selectedItemFrom.name, selectedItemTo.name);
       },
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: borderColor)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         backgroundColor: bgColor,
       ),
-      icon: icon,
-      label: labelText,
+      icon: Icon(
+        icon,
+        color: Colors.black,
+      ),
+      label: Text(
+        labelText,
+        style: const TextStyle(color: Colors.black),
+      ),
     );
   }
 }

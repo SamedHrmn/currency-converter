@@ -11,6 +11,7 @@ class RatesViewModel extends ChangeNotifier {
   RatesModel _rate = RatesModel();
   RatesState _state = RatesState.IdleState;
   List<CurrencyEnum> currencyBase = [];
+  CurrencyEnum? lastCurrencyBaseForRates;
 
   RatesModel get rate => _rate;
 
@@ -37,7 +38,7 @@ class RatesViewModel extends ChangeNotifier {
 
       _rate.rates!.forEach((key, value) => currencyBase.add(CurrencyEnum.values.byName(key)));
       currencyBase = currencyBase.toSet().toList();
-
+      lastCurrencyBaseForRates = CurrencyEnum.values.byName(baseCurrency);
       state = RatesState.LoadedState;
     } catch (e) {
       state = RatesState.ErrorState;

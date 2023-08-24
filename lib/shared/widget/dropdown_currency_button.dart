@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class DropdownCurrencyButton extends StatefulWidget {
   const DropdownCurrencyButton({
     required this.currencyBase,
-    required this.initialValue,
+    this.initialValue,
     super.key,
     this.onItemSelected,
     this.mainAxisAlignment,
@@ -13,7 +13,7 @@ class DropdownCurrencyButton extends StatefulWidget {
   final List<CurrencyEnum> currencyBase;
   final MainAxisAlignment? mainAxisAlignment;
   final void Function(CurrencyEnum? onItem)? onItemSelected;
-  final CurrencyEnum initialValue;
+  final CurrencyEnum? initialValue;
 
   @override
   State<DropdownCurrencyButton> createState() => _DropdownCurrencyButtonState();
@@ -22,7 +22,7 @@ class DropdownCurrencyButton extends StatefulWidget {
 class _DropdownCurrencyButtonState extends State<DropdownCurrencyButton> {
   CurrencyEnum? selectedValue;
 
-  void updateSelectedValue(CurrencyEnum v) {
+  void updateSelectedValue(CurrencyEnum? v) {
     setState(() {
       selectedValue = v;
     });
@@ -31,7 +31,7 @@ class _DropdownCurrencyButtonState extends State<DropdownCurrencyButton> {
   @override
   void initState() {
     super.initState();
-    selectedValue = widget.initialValue;
+    selectedValue = widget.initialValue ?? CurrencyEnum.EUR;
   }
 
   @override
@@ -58,6 +58,7 @@ class _DropdownCurrencyButtonState extends State<DropdownCurrencyButton> {
         }).toList(),
         onChanged: (item) {
           widget.onItemSelected?.call(item);
+          updateSelectedValue(item);
         },
         value: selectedValue,
       ),

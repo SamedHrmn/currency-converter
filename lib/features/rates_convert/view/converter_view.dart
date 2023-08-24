@@ -1,9 +1,9 @@
-import 'package:currency_converter/core/components/button_widget.dart';
-import 'package:currency_converter/core/components/dropdown_currency_button.dart';
-import 'package:currency_converter/core/components/textfield_widget.dart';
 import 'package:currency_converter/core/enums/currency_enum.dart';
 import 'package:currency_converter/features/rates_convert/viewmodel/converter_view_model.dart';
+import 'package:currency_converter/features/rates_convert/widget/amount_text_field.dart';
+import 'package:currency_converter/features/rates_convert/widget/convert_button.dart';
 import 'package:currency_converter/features/rates_search/viewmodel/rates_view_model.dart';
+import 'package:currency_converter/shared/widget/dropdown_currency_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -82,9 +82,16 @@ class _ConverterPageState extends State<ConverterPage> {
 
           return Column(
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
               buildDropDownButtons(viewModel),
-              TextFieldAmount(controller: controller, outlineBorderColor: Colors.purple, hintColor: Colors.grey, labelColor: Colors.purple),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: TextFieldAmount(
+                  controller: controller,
+                  outlineBorderColor: Colors.purple,
+                  hintColor: Colors.grey,
+                ),
+              ),
               if (converted != null) ...{
                 Text(
                   (converted * (controller.text.isNotEmpty ? int.parse(controller.text) : 0)).toStringAsFixed(2),
@@ -99,19 +106,16 @@ class _ConverterPageState extends State<ConverterPage> {
                 selectedItemTo: selectedItemTo,
                 converterViewModel: converterViewModel,
                 bgColor: Colors.white,
-                icon: const Icon(Icons.repeat),
-                labelText: const Text('Convert'),
-                borderColor: Colors.purple,
+                icon: Icons.repeat,
+                labelText: 'Convert',
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      DateFormat.yMMMEd('en_US').format(viewModel.rate.date!),
-                      style: const TextStyle(fontSize: 13, color: Colors.black),
-                    ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    DateFormat.yMMMEd('en_US').format(viewModel.rate.date!),
+                    style: const TextStyle(fontSize: 13, color: Colors.black),
                   ),
                 ),
               ),

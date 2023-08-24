@@ -6,3 +6,4 @@ linter:
     lines_longer_than_80_chars: false
     constant_identifier_names: false
     library_private_types_in_public_api: false
+    sort_pub_dependencies: false
