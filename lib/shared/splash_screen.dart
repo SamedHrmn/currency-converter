@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(
-        const Duration(seconds: 5),
+        const Duration(seconds: 1),
         () => Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute<void>(
             builder: (context) => const HomePage(),
@@ -34,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   void _initController() {
-    transitionController = AnimationController(vsync: this, duration: const Duration(seconds: 5))..repeat();
+    transitionController = AnimationController(vsync: this, duration: const Duration(seconds: 3))..repeat();
   }
 
   @override

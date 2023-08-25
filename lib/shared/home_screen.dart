@@ -28,62 +28,65 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(249, 246, 246, 246),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(
-              child: Text(
-                'Converter',
-                style: TextStyle(color: Colors.black),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(249, 246, 246, 246),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(
+                child: Text(
+                  'Converter',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
+              Tab(
+                child: Text(
+                  'Rates',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+            onTap: (tabIndex) {
+              switch (tabIndex) {
+                case 0:
+                  break;
+                case 1:
+                  break;
+              }
+            },
+          ),
+        ),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xfff0f5f6),
+                  Color(0xfff6f6f6),
+                ],
+              ))),
             ),
-            Tab(
-              child: Text(
-                'Rates',
-                style: TextStyle(color: Colors.black),
+            StreamProvider<NetworkStatus>(
+              initialData: NetworkStatus.Online,
+              create: (context) => NetworkStatusService().networkStatusController.stream,
+              builder: (context, child) => TabBarView(
+                controller: _tabController,
+                children: const [
+                  ConverterPage(),
+                  RatesPage(),
+                ],
               ),
             ),
           ],
-          onTap: (tabIndex) {
-            switch (tabIndex) {
-              case 0:
-                break;
-              case 1:
-                break;
-            }
-          },
         ),
-      ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: DecoratedBox(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xfff0f5f6),
-                Color(0xfff6f6f6),
-              ],
-            ))),
-          ),
-          StreamProvider<NetworkStatus>(
-            initialData: NetworkStatus.Online,
-            create: (context) => NetworkStatusService().networkStatusController.stream,
-            builder: (context, child) => TabBarView(
-              controller: _tabController,
-              children: const [
-                ConverterPage(),
-                RatesPage(),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

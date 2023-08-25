@@ -10,6 +10,8 @@ class BaseTextField extends StatelessWidget {
     this.hintText,
     this.radius,
     this.borderColor,
+    this.onChanged,
+    this.keyboardType,
   });
 
   final TextEditingController? controller;
@@ -19,12 +21,15 @@ class BaseTextField extends StatelessWidget {
   final String? hintText;
   final double? radius;
   final Color? borderColor;
+  final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType ?? TextInputType.number,
+      onChanged: onChanged,
       decoration: InputDecoration(
         labelStyle: labelStyle,
         hintStyle: hintStyle,
