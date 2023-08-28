@@ -1,8 +1,13 @@
+import 'package:currency_converter/core/constants/color_constants.dart';
+import 'package:currency_converter/core/constants/string_constants.dart';
 import 'package:currency_converter/core/enums/currency_enum.dart';
+import 'package:currency_converter/features/rates_convert/view/converter_view_mixin.dart';
 import 'package:currency_converter/features/rates_convert/viewmodel/converter_view_model.dart';
 import 'package:currency_converter/features/rates_convert/widget/amount_text_field.dart';
 import 'package:currency_converter/features/rates_convert/widget/convert_button.dart';
 import 'package:currency_converter/features/rates_search/viewmodel/rates_view_model.dart';
+import 'package:currency_converter/shared/widget/app_loading_indicator.dart';
+import 'package:currency_converter/shared/widget/app_text.dart';
 import 'package:currency_converter/shared/widget/dropdown_currency_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,44 +20,7 @@ class ConverterPage extends StatefulWidget {
   _ConverterPageState createState() => _ConverterPageState();
 }
 
-class _ConverterPageState extends State<ConverterPage> {
-  CurrencyEnum selectedItemFrom = CurrencyEnum.EUR;
-  CurrencyEnum selectedItemTo = CurrencyEnum.TRY;
-  String resultConverted = '0';
-  late final TextEditingController controller;
-
-  @override
-  void initState() {
-    super.initState();
-
-    controller = TextEditingController();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<RatesViewModel>().getLatestCurrencyRates('EUR');
-    });
-  }
-
-  void dropDownLeftItemCallBack(CurrencyEnum? val) {
-    if (val == null) return;
-    setState(() {
-      selectedItemFrom = val;
-    });
-  }
-
-  void dropDownRightItemCallBack(CurrencyEnum? val) {
-    if (val == null) return;
-    setState(() {
-      selectedItemTo = val;
-    });
-  }
-
-  void resultConvertedCallBack(String? val) {
-    if (val == null) return;
-    setState(() {
-      resultConverted = val;
-    });
-  }
-
+class _ConverterPageState extends State<ConverterPage> with ConverterViewMixin {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<RatesViewModel>(context);
@@ -65,14 +33,10 @@ class _ConverterPageState extends State<ConverterPage> {
       return Consumer<ConverterViewModel>(
         builder: (context, converterViewModel, child) {
           if (converterViewModel.state == ConverterState.LoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const AppLoadingIndicator();
           }
           if (converterViewModel.state == ConverterState.ErrorState) {
-            return const Center(
-              child: Text('Error'),
-            );
+            return AppText.error(text: StringConstants.errorText);
           }
 
           double? converted;
@@ -82,43 +46,15 @@ class _ConverterPageState extends State<ConverterPage> {
 
           return Column(
             children: [
-              const SizedBox(height: 32),
-              buildDropDownButtons(viewModel),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                child: TextFieldAmount(
-                  controller: controller,
-                  outlineBorderColor: Colors.purple,
-                  hintColor: Colors.grey,
-                ),
+              _ConverterCard(
+                ratesViewModel: viewModel,
+                controller: controller,
+                converted: converted,
+                leftItemCallback: dropDownLeftItemCallBack,
+                rightItemCallback: dropDownRightItemCallBack,
               ),
-              if (converted != null) ...{
-                Text(
-                  (converted * (controller.text.isNotEmpty ? int.parse(controller.text) : 0)).toStringAsFixed(2),
-                  style: const TextStyle(color: Colors.black),
-                ),
-              },
-              const SizedBox(
-                height: 20,
-              ),
-              ButtonConvert(
-                selectedItemFrom: selectedItemFrom,
-                selectedItemTo: selectedItemTo,
-                converterViewModel: converterViewModel,
-                bgColor: Colors.white,
-                icon: Icons.repeat,
-                labelText: 'Convert',
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    DateFormat.yMMMEd('en_US').format(viewModel.rate.date!),
-                    style: const TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                ),
-              ),
+              convertButton(converterViewModel),
+              rateDateText(viewModel),
             ],
           );
         },
@@ -128,23 +64,98 @@ class _ConverterPageState extends State<ConverterPage> {
     }
   }
 
-  Widget buildDropDownButtons(RatesViewModel viewModel) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        DropdownCurrencyButton(
-          currencyBase: viewModel.currencyBase,
-          onItemSelected: dropDownLeftItemCallBack,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          initialValue: CurrencyEnum.EUR,
-        ),
-        DropdownCurrencyButton(
-          currencyBase: viewModel.currencyBase,
-          onItemSelected: dropDownRightItemCallBack,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          initialValue: CurrencyEnum.TRY,
-        ),
-      ],
+  Padding rateDateText(RatesViewModel viewModel) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      child: AppText(
+        text: DateFormat.yMMMEd('en_US').format(viewModel.rate.date!),
+        size: 13,
+      ),
+    );
+  }
+
+  SizedBox convertButton(ConverterViewModel converterViewModel) {
+    return SizedBox(
+      height: 56,
+      width: 200,
+      child: ButtonConvert(
+        selectedItemFrom: selectedItemFrom,
+        selectedItemTo: selectedItemTo,
+        converterViewModel: converterViewModel,
+        bgColor: Colors.white,
+        icon: Icons.repeat,
+        labelText: StringConstants.convertButtonText,
+      ),
+    );
+  }
+}
+
+class _ConverterCard extends StatelessWidget {
+  const _ConverterCard({
+    required this.ratesViewModel,
+    required this.controller,
+    required this.leftItemCallback,
+    required this.rightItemCallback,
+    this.converted,
+  });
+
+  final RatesViewModel ratesViewModel;
+  final double? converted;
+  final void Function(CurrencyEnum?)? leftItemCallback;
+  final void Function(CurrencyEnum?)? rightItemCallback;
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              DropdownCurrencyButton(
+                currencyBase: ratesViewModel.currencyBase,
+                onItemSelected: leftItemCallback,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                initialValue: CurrencyEnum.EUR,
+              ),
+              DropdownCurrencyButton(
+                currencyBase: ratesViewModel.currencyBase,
+                onItemSelected: rightItemCallback,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                initialValue: CurrencyEnum.TRY,
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: TextFieldAmount(
+              controller: controller,
+              outlineBorderColor: ColorConstants.primaryColor,
+              hintColor: ColorConstants.secondaryColor,
+            ),
+          ),
+          if (converted != null) ...{
+            AppText(
+              text: (converted! * (controller.text.isNotEmpty ? int.parse(controller.text) : 0)).toStringAsFixed(2),
+              size: 24,
+            ),
+          },
+        ],
+      ),
     );
   }
 }

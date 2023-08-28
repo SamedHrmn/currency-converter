@@ -35,7 +35,7 @@ class BaseTextField extends StatelessWidget {
         hintStyle: hintStyle,
         labelText: labelText,
         hintText: hintText,
-        border: const OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(radius ?? 4)),
         focusedBorder: OutlineInputBorder(
           borderSide: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none,
           borderRadius: BorderRadius.circular(radius ?? 4),
