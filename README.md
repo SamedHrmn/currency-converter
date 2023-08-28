@@ -1,6 +1,28 @@
-# currency_converter
+# Currency Converter - MVVM Flutter Project
 
-#### Simple currency converting app made by Flutter.<br><br>
+## Features
+🎯 Show, search and convert between them currencies.    
+
+
+
+
+ 
+
+
+
+## Version
+Flutter 3.10.6 • Dart 3.0.6 • DevTools 2.23.1
+
+
+
+
+
+  
+## Screenshots
+
+ <img src="https://github.com/SamedHrmn/currency-converter/assets/60006881/bd97507e-ef5c-4a37-b3e3-a2b0433f1ccd" height="600">
+ <img src="https://github.com/SamedHrmn/currency-converter/assets/60006881/9973da48-0e8d-46a1-89c2-8b2e1d92e5de" height="595">
+
 
 <h2> Licence </h3>
 MIT License
