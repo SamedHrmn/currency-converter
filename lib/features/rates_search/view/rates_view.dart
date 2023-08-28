@@ -1,5 +1,8 @@
 import 'package:currency_converter/core/components/base_text_field.dart';
+import 'package:currency_converter/core/constants/string_constants.dart';
+import 'package:currency_converter/features/rates_search/view/rates_view_mixin.dart';
 import 'package:currency_converter/features/rates_search/viewmodel/rates_view_model.dart';
+import 'package:currency_converter/shared/widget/app_text.dart';
 import 'package:currency_converter/shared/widget/dropdown_currency_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +14,7 @@ class RatesPage extends StatefulWidget {
   _RatesPageState createState() => _RatesPageState();
 }
 
-class _RatesPageState extends State<RatesPage> with SingleTickerProviderStateMixin {
-  String? searchText;
-  Map<String, double> searchRates = {};
-  late final AnimationController animController;
-
+class _RatesPageState extends State<RatesPage> with SingleTickerProviderStateMixin, RatesViewMixin {
   @override
   void initState() {
     super.initState();
@@ -23,95 +22,86 @@ class _RatesPageState extends State<RatesPage> with SingleTickerProviderStateMix
   }
 
   @override
-  void dispose() {
-    animController.dispose();
-    super.dispose();
-  }
-
-  void updateList() {
-    animController
-      ..reset()
-      ..forward();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Consumer<RatesViewModel>(
-                  builder: (context, viewModel, _) {
-                    if (viewModel.state != RatesState.LoadedState) {
-                      return const SizedBox();
-                    }
-
-                    return BaseTextField(
-                      hintText: 'Search',
-                      keyboardType: TextInputType.text,
-                      onChanged: (p0) {
-                        setState(() {
-                          searchText = p0;
-                          searchRates = {};
-                          viewModel.rate.rates!.forEach((key, value) {
-                            if (searchText != null && (searchText?.isNotEmpty ?? false)) {
-                              if (key.contains(searchText!.toUpperCase())) {
-                                searchRates[key] = value;
-                              }
-                            }
-                          });
-
-                          updateList();
-                        });
-                      },
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(width: 16),
-              Consumer<RatesViewModel>(
-                builder: (context, viewModel, _) {
-                  if (viewModel.state != RatesState.LoadedState) {
-                    return const SizedBox();
-                  }
-
-                  return DropdownCurrencyButton(
-                    currencyBase: viewModel.currencyBase,
-                    onItemSelected: (onItem) {
-                      if (onItem == null) return;
-                      viewModel.getLatestCurrencyRates(onItem.name);
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: Consumer<RatesViewModel>(
-            builder: (context, viewModel, _) {
-              if (viewModel.state == RatesState.LoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (viewModel.state == RatesState.ErrorState) {
-                return const Center(
-                  child: Text('Error'),
-                );
-              }
-
-              return rateslistBuilder(viewModel);
-            },
-          ),
-        ),
+        searchFieldAndBaseCurrency(),
+        ratesListBuilder(),
       ],
     );
   }
 
-  Widget rateslistBuilder(RatesViewModel viewModel) {
+  Expanded ratesListBuilder() {
+    return Expanded(
+      child: Consumer<RatesViewModel>(
+        builder: (context, viewModel, _) {
+          if (viewModel.state == RatesState.LoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (viewModel.state == RatesState.ErrorState) {
+            return AppText.error(text: StringConstants.errorText);
+          }
+
+          return _RatesList(viewModel: viewModel, animController: animController, searchRates: searchRates);
+        },
+      ),
+    );
+  }
+
+  Padding searchFieldAndBaseCurrency() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Consumer<RatesViewModel>(
+              builder: (context, viewModel, _) {
+                if (viewModel.state != RatesState.LoadedState) {
+                  return const SizedBox();
+                }
+
+                return BaseTextField(
+                  hintText: StringConstants.searchHintText,
+                  keyboardType: TextInputType.text,
+                  onChanged: (p0) {
+                    updateSearchOperation(viewModel, p0);
+                  },
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+          Consumer<RatesViewModel>(
+            builder: (context, viewModel, _) {
+              if (viewModel.state != RatesState.LoadedState) {
+                return const SizedBox();
+              }
+
+              return DropdownCurrencyButton(
+                currencyBase: viewModel.currencyBase,
+                onItemSelected: (onItem) {
+                  if (onItem == null) return;
+                  viewModel.getLatestCurrencyRates(onItem.name);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RatesList extends StatelessWidget {
+  const _RatesList({required this.viewModel, required this.animController, required this.searchRates});
+
+  final RatesViewModel viewModel;
+  final AnimationController animController;
+  final Map<String, double> searchRates;
+
+  @override
+  Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animController,
       child: ListView.separated(

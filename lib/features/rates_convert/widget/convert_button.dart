@@ -1,5 +1,6 @@
 import 'package:currency_converter/core/enums/currency_enum.dart';
 import 'package:currency_converter/features/rates_convert/viewmodel/converter_view_model.dart';
+import 'package:currency_converter/shared/widget/app_text.dart';
 import 'package:flutter/material.dart';
 
 class ButtonConvert extends StatelessWidget {
@@ -36,9 +37,8 @@ class ButtonConvert extends StatelessWidget {
         icon,
         color: Colors.black,
       ),
-      label: Text(
-        labelText,
-        style: const TextStyle(color: Colors.black),
+      label: AppText(
+        text: labelText,
       ),
     );
   }

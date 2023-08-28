@@ -1,4 +1,5 @@
 import 'package:currency_converter/core/enums/currency_enum.dart';
+import 'package:currency_converter/shared/widget/app_text.dart';
 import 'package:flutter/material.dart';
 
 class DropdownCurrencyButton extends StatefulWidget {
@@ -36,31 +37,54 @@ class _DropdownCurrencyButtonState extends State<DropdownCurrencyButton> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<CurrencyEnum>(
-        dropdownColor: Colors.grey[200],
-        items: widget.currencyBase.map((currency) {
-          return DropdownMenuItem<CurrencyEnum>(
-            value: currency,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: 45,
-                  height: 45,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/flags/${currency.name}.png'), fit: BoxFit.contain)),
-                ),
-                Text(currency.name)
-              ],
-            ),
-          );
-        }).toList(),
-        onChanged: (item) {
-          widget.onItemSelected?.call(item);
-          updateSelectedValue(item);
-        },
-        value: selectedValue,
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+          ),
+        ],
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<CurrencyEnum>(
+          dropdownColor: Colors.grey[200],
+          borderRadius: BorderRadius.circular(12),
+          items: widget.currencyBase.map((currency) {
+            return DropdownMenuItem<CurrencyEnum>(
+              value: currency,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 45,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/flags/${currency.name}.png'), fit: BoxFit.contain)),
+                        ),
+                        AppText(text: currency.name)
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (item) {
+            widget.onItemSelected?.call(item);
+            updateSelectedValue(item);
+          },
+          value: selectedValue,
+        ),
       ),
     );
   }
