@@ -4,7 +4,8 @@
 🎯 Show, search and convert between them currencies.    
 
 
-
+## Google Play
+https://play.google.com/store/apps/details?id=com.samedharman.currency_converter
 
  
 
