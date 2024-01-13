@@ -1,14 +1,9 @@
 # Currency Converter - MVVM Flutter Project
 
 ## Features
-🎯 Show, search and convert between them currencies.    
+🎯 Show, search and convert between them currencies. 
 
-
-## Google Play
-https://play.google.com/store/apps/details?id=com.samedharman.currency_converter
-
- 
-
+#### Important Note: The api I used in the project now asks for an api key. In addition, I removed the application from the Google Play Store because I encountered a lot of errors in exchangeratesapi.io free use.
 
 
 ## Version
