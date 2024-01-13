@@ -14,12 +14,13 @@ abstract class ICurrencyService {
 }
 
 class HttpCurrencyService implements ICurrencyService {
-  static const String END_POINT = 'https://api.exchangerate.host/';
-  static const String LATEST_POINT = 'latest?base=';
-
+  static late final String endPoint;
   final HttpClient client;
+  final String apiKey;
 
-  HttpCurrencyService(this.client);
+  HttpCurrencyService({required this.client, required this.apiKey}) {
+    endPoint = 'http://api.exchangeratesapi.io/v1/latest?access_key=$apiKey';
+  }
 
   @override
   Future<RatesModel> getCurrencyRates(String baseUrl) async {
@@ -33,25 +34,29 @@ class HttpCurrencyService implements ICurrencyService {
       await cacheCurrencyService.cacheClear(DateTime.now(), baseUrl);
 
       final response = cacheCurrencyService.readFile();
-      if (response == null) throw Exception();
-      log('Currency from cache');
-      return RatesModel.fromJson(json.decode(response) as Map<String, dynamic>);
-    } else {
-      final request = await client.getUrl(Uri.parse(END_POINT + LATEST_POINT + baseUrl));
-      final response = await request.close();
-      final responseBody = await response.transform(utf8.decoder).join();
-      client.close();
-
-      cacheCurrencyService.writeFile(body: responseBody);
-      log('Currency from network,file write');
-      return RatesModel.fromJson(json.decode(responseBody) as Map<String, dynamic>);
+      if (response != null) {
+        log('Currency from cache $response');
+        final model = RatesModel.fromJson(json.decode(response) as Map<String, dynamic>);
+        if (model.success ?? false) {
+          return model;
+        }
+      }
     }
+
+    final request = await client.getUrl(Uri.parse('$endPoint&base=$baseUrl'));
+    final response = await request.close();
+    final responseBody = await response.transform(utf8.decoder).join();
+    client.close();
+
+    cacheCurrencyService.writeFile(body: responseBody);
+    log('Currency from network,file write $responseBody');
+    return RatesModel.fromJson(json.decode(responseBody) as Map<String, dynamic>);
   }
 
   @override
   Future<ConvertModel?> getConverterResult(String from, String to) async {
     try {
-      final request = await client.getUrl(Uri.parse('${END_POINT}convert?from=$from&to=$to'));
+      final request = await client.getUrl(Uri.parse('${endPoint}convert?from=$from&to=$to'));
       final response = await request.close();
       final responseBody = await response.transform(utf8.decoder).join();
       return ConvertModel.fromJson(json.decode(responseBody) as Map<String, dynamic>);

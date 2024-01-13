@@ -16,7 +16,7 @@ mixin ConverterViewMixin on State<ConverterPage> {
     controller = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<RatesViewModel>().getLatestCurrencyRates('EUR');
+      context.read<RatesViewModel>().getLatestCurrencyRates('TRY');
     });
   }
 

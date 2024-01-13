@@ -25,7 +25,7 @@ class _ConverterPageState extends State<ConverterPage> with ConverterViewMixin {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<RatesViewModel>(context);
 
-    if (viewModel.state == RatesState.LoadingState || viewModel.state == RatesState.ErrorState) {
+    if (viewModel.state == RatesState.LoadingState) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -60,7 +60,11 @@ class _ConverterPageState extends State<ConverterPage> with ConverterViewMixin {
         },
       );
     } else {
-      return const SizedBox();
+      return Center(
+        child: AppText.error(
+          text: 'Error',
+        ),
+      );
     }
   }
 

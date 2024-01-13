@@ -18,7 +18,7 @@ class RatesViewModel extends ChangeNotifier {
   RatesState get state => _state;
 
   RatesViewModel() {
-    getLatestCurrencyRates('EUR');
+    getLatestCurrencyRates('TRY');
   }
 
   set state(RatesState state) {

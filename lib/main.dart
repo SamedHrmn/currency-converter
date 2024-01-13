@@ -5,12 +5,16 @@ import 'package:currency_converter/shared/home_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  await Future.wait([
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]),
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
+    dotenv.load(),
+  ]);
   setup();
   runApp(
     MultiProvider(
